@@ -4,8 +4,9 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5</TargetFramework>
     <PackAsTool>true</PackAsTool>
-    <ToolCommandName>coverageconvertor</ToolCommandName>
+    <ToolCommandName>dotnet-coverageconvertor</ToolCommandName>
     <Description>Convert .coverage files to .coveragexml files to support SonarCloud Code Coverage when using VSTest@2.</Description>
+    <Keyword>Code Coverage Convertor .coverage .coveragexml</Keyword>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
