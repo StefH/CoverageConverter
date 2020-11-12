@@ -1,0 +1,36 @@
+variables:
+  buildProjects: '**/*.csproj'
+
+steps:
+
+- task: DotNetCoreCLI@2
+  displayName: "Install tool: dotnet-coverageconvertor"
+  inputs:
+    command: 'custom'
+    custom: 'tool'
+    arguments: 'update --global dotnet-coverageconvertor'
+
+- task: DotNetCoreCLI@2
+  displayName: Build Projects
+  inputs:
+    command: 'build'
+    arguments: /p:Configuration=Release
+    projects: $(buildProjects)
+
+- task: VSTest@2
+  displayName: 'VsTest'
+  inputs:
+    testSelector: 'testAssemblies'
+    vsTestVersion: 16.0
+    diagnosticsEnabled: true
+    codeCoverageEnabled: true
+    testAssemblyVer2: |
+     **\*tests.dll
+     !**\*UITests.dll
+     !**\*TestAdapter.dll
+     !**\obj\**
+
+- task: CmdLine@2
+  displayName: 'Convert .coverage to .coveragexml'
+  inputs:
+    script: 'coverageconvertor --CoverageFilesFolder "$(Agent.TempDirectory)\TestResults"'
