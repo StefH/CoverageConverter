@@ -4,11 +4,11 @@ variables:
 steps:
 
 - task: DotNetCoreCLI@2
-  displayName: "Install tool: dotnet-coverageconvertor"
+  displayName: "Install tool: dotnet-coverageconverter"
   inputs:
     command: 'custom'
     custom: 'tool'
-    arguments: 'update --global dotnet-coverageconvertor'
+    arguments: 'update --global dotnet-coverageconverter'
 
 - task: DotNetCoreCLI@2
   displayName: Build Projects
@@ -33,4 +33,4 @@ steps:
 - task: CmdLine@2
   displayName: 'Convert .coverage to .coveragexml'
   inputs:
-    script: 'CoverageConvertor --CoverageFilesFolder "$(Agent.TempDirectory)\TestResults"'
+    script: 'dotnet-coverageconverter --CoverageFilesFolder "$(Agent.TempDirectory)\TestResults"'
