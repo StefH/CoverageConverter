@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30709.132
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoverageConvertor", "CoverageConvertor\CoverageConvertor.csproj", "{58911ACD-E4C4-456F-8BC6-3B7E43D3E0AF}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0AB9F17A-9C71-4A0E-BC02-42014749E2A0}"
 	ProjectSection(SolutionItems) = preProject
 		azure-pipelines-ci.yml = azure-pipelines-ci.yml
@@ -12,16 +10,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-coverageconverter", "dotnet-coverageconverter\dotnet-coverageconverter.csproj", "{8C8E2CA1-1F2F-4EE9-8D23-54F50B7C2B60}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{58911ACD-E4C4-456F-8BC6-3B7E43D3E0AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{58911ACD-E4C4-456F-8BC6-3B7E43D3E0AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{58911ACD-E4C4-456F-8BC6-3B7E43D3E0AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{58911ACD-E4C4-456F-8BC6-3B7E43D3E0AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C8E2CA1-1F2F-4EE9-8D23-54F50B7C2B60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C8E2CA1-1F2F-4EE9-8D23-54F50B7C2B60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C8E2CA1-1F2F-4EE9-8D23-54F50B7C2B60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C8E2CA1-1F2F-4EE9-8D23-54F50B7C2B60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,5 @@
 <Project>
   <PropertyGroup>
-    <VersionPrefix>0.0.2</VersionPrefix>
     <PackageProjectUrl>https://github.com/StefH/CoverageConverter</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/StefH/CoverageConverter</RepositoryUrl>
