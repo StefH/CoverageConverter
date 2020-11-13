@@ -15,7 +15,7 @@ namespace CoverageConverter
     {
         public class Options
         {
-            [Option('c', "CoverageFilesFolder", Required = true, HelpText = "The folder where the .coverage files are defined.")]
+            [Option('f', "CoverageFilesFolder", Required = true, HelpText = "The folder where the .coverage files are defined.")]
             public string CoverageFilesFolder { get; set; }
 
             [Option('d', "DotCoverageExtension", Required = false, HelpText = "The extension from the coverage files.", Default = ".coverage")]
