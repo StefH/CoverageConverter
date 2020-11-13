@@ -2,7 +2,7 @@
   "profiles": {
     "CoverageConvertor": {
       "commandName": "Project",
-      "commandLineArgs": "--CoverageFilesFolder C:\\temp\\_TESTS"
+      "commandLineArgs": "--CoverageFilesFolder C:\\temp\\_TESTS3"
     }
   }
 }

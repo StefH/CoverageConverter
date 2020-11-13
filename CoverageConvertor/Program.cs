@@ -3,72 +3,107 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using CoverageConverter.Settings;
+using CommandLine;
 using Microsoft.Extensions.Logging;
-using NuGet.Common;
 
 namespace CoverageConverter
 {
     /// <summary>
-    /// Based on https://github.com/danielpalme/ReportGenerator/wiki/Visual-Studio-Coverage-Tools
+    /// Idea is based on https://github.com/danielpalme/ReportGenerator/wiki/Visual-Studio-Coverage-Tools
     /// </summary>
     public class Program
     {
-        private const string VERSION = "16.8.0";
+        public class Options
+        {
+            [Option('c', "CoverageFilesFolder", Required = true, HelpText = "The folder where the .coverage files are defined.")]
+            public string CoverageFilesFolder { get; set; }
+
+            [Option('d', "DotCoverageExtension", Required = false, HelpText = "The extension from the coverage files.", Default = ".coverage")]
+            public string DotCoverageExtension { get; set; }
+
+            [Option('a', "AllDirectories", Required = false, HelpText = "Includes also sub-folders in the search operation.", Default = true)]
+            public bool AllDirectories { get; set; }
+
+            [Option('g', "Guid", Required = false, HelpText = "Only take .coverage file if the folder is a guid (that's the one VSTest creates).", Default = true)]
+            public bool OnlyGuidFolder { get; set; }
+
+            [Option('o', "Overwrite", Required = false, HelpText = "Overwrite the existing .coveragexml files.", Default = true)]
+            public bool Overwrite { get; set; }
+        }
+
         private const string DOT_COVERAGE_DOT_XML = ".coveragexml";
 
         /// <summary>
         /// The Logger.
         /// </summary>
-        private readonly ILogger<Program> _logger = LoggerFactory.Create(o => o.AddConsole()).CreateLogger<Program>();
+        private static readonly ILogger<Program> _logger = LoggerFactory.Create(o => o.AddConsole()).CreateLogger<Program>();
 
         static void Main(string[] args)
         {
-            
+            Parser.Default.ParseArguments<Options>(args).WithParsed(Run);
+        }
 
-            var settings = CoverageConvertorSettingsParser.ParseArguments(args);
-
+        private static void Run(Options options)
+        {
             List<string> coverageFiles;
             try
             {
+                var searchOption = options.AllDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
                 coverageFiles = Directory
-                    .EnumerateFiles(settings.CoverageFilesFolder, $"*{settings.DotCoverageExtension}", SearchOption.AllDirectories)
-                    .Where(path => Guid.TryParse(new DirectoryInfo(Path.GetDirectoryName(path)).Name, out _)) // Only take .coverage file if the folder is a guid (that's the one VSTest creates)
+                    .EnumerateFiles(options.CoverageFilesFolder, $"*{options.DotCoverageExtension}", searchOption)
+                    .Where(path => options.OnlyGuidFolder == false || Guid.TryParse(new DirectoryInfo(Path.GetDirectoryName(path)).Name, out _))
                     .ToList();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error processing folder '{settings.CoverageFilesFolder}' (Exception: {ex})");
+                _logger.LogCritical(ex, "Error processing folder '{CoverageFilesFolder}'.", options.CoverageFilesFolder);
                 return;
             }
 
             if (coverageFiles.Count == 0)
             {
-                Console.WriteLine($"No '{settings.DotCoverageExtension}' files found in folder '{settings.CoverageFilesFolder}'");
+                _logger.LogWarning("No '{DotCoverageExtension}' files found in folder '{CoverageFilesFolder}'", options.DotCoverageExtension, options.CoverageFilesFolder);
                 return;
             }
 
-            var nugetHomePath = NuGetEnvironment.GetFolderPath(NuGetFolderPath.NuGetHome);
-            // C:\Users\azurestef\.nuget\packages\microsoft.codecoverage\16.8.0\build\netstandard1.0\CodeCoverage
-            var codeCoverageExePath = $"{Path.Combine(nugetHomePath, "packages", "microsoft.codecoverage", VERSION, "build", "netstandard1.0", "CodeCoverage", "CodeCoverage.exe")}";
-
+            var codeCoverageExePath = $"{Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Microsoft.CodeCoverage", "CodeCoverage.exe")}";
             foreach (var sourceFilePath in coverageFiles)
             {
-                var destinationFilePath = sourceFilePath.Replace(settings.DotCoverageExtension, DOT_COVERAGE_DOT_XML);
+                var destinationFilePath = sourceFilePath.Replace(options.DotCoverageExtension, DOT_COVERAGE_DOT_XML);
 
-                Console.WriteLine($"Generating file '{destinationFilePath}' based on '{sourceFilePath}'");
+                _logger.LogInformation("Generating file '{DestinationFilePath}' based on '{SourceFilePath}'", destinationFilePath, sourceFilePath);
+                
+                DeleteExistingDestinationFileIfNeeded(options, destinationFilePath);
 
-                try
+                RunCodeCoverageExe(codeCoverageExePath, sourceFilePath, destinationFilePath);
+            }
+        }
+
+        private static void DeleteExistingDestinationFileIfNeeded(Options options, string destinationFilePath)
+        {
+            try
+            {
+                if (options.Overwrite && File.Exists(destinationFilePath))
                 {
-                    var process = Process.Start(codeCoverageExePath, $"analyze /output:\"{destinationFilePath}\" \"{sourceFilePath}\"");
-                    process?.WaitForExit();
+                    File.Delete(destinationFilePath);
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error processing file '{sourceFilePath}' (Exception: {ex})");
-                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(ex, "Unable to delete existing file '{DestinationFilePath}'.", destinationFilePath);
+            }
+        }
 
-                Console.WriteLine();
+        private static void RunCodeCoverageExe(string codeCoverageExePath, string sourceFilePath, string destinationFilePath)
+        {
+            try
+            {
+                var process = Process.Start(codeCoverageExePath, $"analyze /output:\"{destinationFilePath}\" \"{sourceFilePath}\"");
+                process?.WaitForExit();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(ex, "Error processing file '{SourceFilePath}'.", sourceFilePath);
             }
         }
     }
