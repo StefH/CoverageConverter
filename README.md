@@ -1,4 +1,4 @@
-# CoverageConverter
+# dotnet-CoverageConverter
 Convert `.coverage` files to `.coveragexml` files to support SonarCloud Code Coverage when using **VSTest@2**.
 
 ## Installation
@@ -16,7 +16,7 @@ Install the tool via your yml pipeline:
 ## Usage
 
 - Step 1: Define a **VSTest@2** task with `codeCoverageEnabled: true`
-- Step 2: Define a **CmdLine@2** task with the `coverageconvertor`-tool and provide the CoverageFilesFolder where the `.coverage` files are placed by vstest.console.exe
+- Step 2: Define a **CmdLine@2** task with the `dotnet-coverageconvertor`-tool and provide the CoverageFilesFolder where the `.coverage` files are placed by vstest.console.exe
 
 #### Example YML pipeline tasks
 ``` yml
@@ -36,8 +36,21 @@ Install the tool via your yml pipeline:
 - task: CmdLine@2
   displayName: 'Convert .coverage to .coveragexml'
   inputs:
-    script: 'coverageconvertor --CoverageFilesFolder "$(Agent.TempDirectory)\TestResults"'
+    script: 'dotnet-coverageconvertor --CoverageFilesFolder "$(Agent.TempDirectory)\TestResults"'
 ```
 
-### Details
+## Commandline Options
+```
+  -f, --CoverageFilesFolder     Required. The folder where the .coverage files are defined.
+
+  -d, --DotCoverageExtension    (Default: .coverage) The extension from the coverage files.
+
+  -a, --AllDirectories          (Default: true) Includes also sub-folders in the search operation.
+
+  -g, --Guid                    (Default: true) Only take .coverage file if the folder is a guid (that's the one VSTest creates).
+
+  -o, --Overwrite               (Default: true) Overwrite the existing .coveragexml files.
+```
+
+### Info
 This project is inspired by [Visual-Studio-Coverage-Tools](https://github.com/danielpalme/ReportGenerator/wiki/Visual-Studio-Coverage-Tools).
