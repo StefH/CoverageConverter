@@ -36,7 +36,11 @@ namespace CoverageConverter
         /// <summary>
         /// The Logger.
         /// </summary>
-        private static readonly ILogger<Program> _logger = LoggerFactory.Create(o => o.AddConsole()).CreateLogger<Program>();
+        private static readonly ILogger<Program> _logger = LoggerFactory.Create(o =>
+        {
+            o.SetMinimumLevel(LogLevel.Information);
+            o.AddConsole();
+        }).CreateLogger<Program>();
 
         static void Main(string[] args)
         {
@@ -48,21 +52,17 @@ namespace CoverageConverter
             List<string> coverageFiles;
             try
             {
-                var searchOption = options.AllDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-                coverageFiles = Directory
-                    .EnumerateFiles(options.CoverageFilesFolder, $"*{options.DotCoverageExtension}", searchOption)
-                    .Where(path => options.OnlyGuidFolder == false || Guid.TryParse(new DirectoryInfo(Path.GetDirectoryName(path)).Name, out _))
-                    .ToList();
+                coverageFiles = FindCoverageFiles(options);
             }
             catch (Exception ex)
             {
-                _logger.LogCritical(ex, "Error processing folder '{CoverageFilesFolder}'.", options.CoverageFilesFolder);
+                _logger.LogCritical(ex, "Error reading folder '{CoverageFilesFolder}'.", options.CoverageFilesFolder);
                 return;
             }
 
             if (coverageFiles.Count == 0)
             {
-                _logger.LogWarning("No '{DotCoverageExtension}' files found in folder '{CoverageFilesFolder}'", options.DotCoverageExtension, options.CoverageFilesFolder);
+                _logger.LogWarning("No '{DotCoverageExtension}' files found in folder '{CoverageFilesFolder}'.", options.DotCoverageExtension, options.CoverageFilesFolder);
                 return;
             }
 
@@ -71,12 +71,22 @@ namespace CoverageConverter
             {
                 var destinationFilePath = sourceFilePath.Replace(options.DotCoverageExtension, DOT_COVERAGE_DOT_XML);
 
-                _logger.LogInformation("Generating file '{DestinationFilePath}' based on '{SourceFilePath}'", destinationFilePath, sourceFilePath);
-                
+                _logger.LogInformation("Generating file '{DestinationFilePath}' based on '{SourceFilePath}'.", destinationFilePath, sourceFilePath);
+
                 DeleteExistingDestinationFileIfNeeded(options, destinationFilePath);
 
                 RunCodeCoverageExe(codeCoverageExePath, sourceFilePath, destinationFilePath);
             }
+        }
+
+        private static List<string> FindCoverageFiles(Options options)
+        {
+            var searchOption = options.AllDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+
+            return Directory
+                .EnumerateFiles(options.CoverageFilesFolder, $"*{options.DotCoverageExtension}", searchOption)
+                .Where(path => options.OnlyGuidFolder == false || Guid.TryParse(new DirectoryInfo(Path.GetDirectoryName(path)).Name, out _))
+                .ToList();
         }
 
         private static void DeleteExistingDestinationFileIfNeeded(Options options, string destinationFilePath)

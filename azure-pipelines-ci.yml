@@ -33,4 +33,4 @@ steps:
 - task: CmdLine@2
   displayName: 'Convert .coverage to .coveragexml'
   inputs:
-    script: 'coverageconvertor --CoverageFilesFolder "$(Agent.TempDirectory)\TestResults"'
+    script: 'CoverageConvertor --CoverageFilesFolder "$(Agent.TempDirectory)\TestResults"'
