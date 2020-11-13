@@ -1,9 +1,17 @@
 # dotnet-coverageconverter
 Convert `.coverage` files to `.coveragexml` files to support SonarCloud Code Coverage when using **VSTest@2**.
 
-## Installation
+[![NuGet Badgedotnet-coverageconverter](https://buildstats.info/nuget/dotnet-coverageconverter)](https://www.nuget.org/packages/dotnet-coverageconverter)
 
-Install the tool via your yml pipeline:
+## Installation
+Install locally:
+``` cmd
+dotnet tool install --global dotnet-coverageconverter
+```
+
+or
+
+Install the tool in your yml pipeline:
 ``` yml
 - task: DotNetCoreCLI@2
   displayName: "Install tool: dotnet-coverageconverter"
