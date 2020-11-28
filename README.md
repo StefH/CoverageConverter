@@ -1,5 +1,5 @@
 # dotnet-coverageconverter
-Convert `.coverage` files to `.coveragexml` files to support SonarCloud Code Coverage when using **VSTest@2**.
+Convert `.coverage` (binary format) files to `.coveragexml` (xml format) files to support SonarCloud Code Coverage when using **VSTest@2**.
 
 [![NuGet Badgedotnet-coverageconverter](https://buildstats.info/nuget/dotnet-coverageconverter)](https://www.nuget.org/packages/dotnet-coverageconverter)
 
