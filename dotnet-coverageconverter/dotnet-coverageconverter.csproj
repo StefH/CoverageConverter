@@ -6,7 +6,7 @@
     <TargetFramework>net5</TargetFramework>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>dotnet-coverageconverter</ToolCommandName>
-    <Description>Convert .coverage files to .coveragexml files to support SonarCloud Code Coverage when using VSTest@2.</Description>
+    <Description>Convert .coverage (binary format) files to .coveragexml (xml format) files to support SonarCloud Code Coverage when using VSTest@2.</Description>
     <PackageTags>Code Coverage Converter;Coverage;Converter;.coverage;.coveragexml;SonarQube;SonarCloud</PackageTags>
   </PropertyGroup>
 
