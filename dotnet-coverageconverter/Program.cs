@@ -13,6 +13,8 @@ namespace CoverageConverter
     /// </summary>
     public class Program
     {
+        private const string DOT_COVERAGE_DOT_XML = ".coveragexml";
+
         public class Options
         {
             [Option('f', "CoverageFilesFolder", Required = true, HelpText = "The folder where the .coverage files are defined.")]
@@ -29,14 +31,15 @@ namespace CoverageConverter
 
             [Option('o', "Overwrite", Required = false, HelpText = "Overwrite the existing .coveragexml files.", Default = true)]
             public bool Overwrite { get; set; }
-        }
 
-        private const string DOT_COVERAGE_DOT_XML = ".coveragexml";
+            [Option('r', "RemoveOriginalCoverageFiles", Required = false, HelpText = "Remove the original .coveragexml files.", Default = false)]
+            public bool RemoveOriginalCoverageFiles { get; set; }
+        }
 
         /// <summary>
         /// The Logger.
         /// </summary>
-        private static readonly ILogger<Program> _logger = LoggerFactory.Create(o =>
+        private static readonly ILogger<Program> Logger = LoggerFactory.Create(o =>
         {
             o.SetMinimumLevel(LogLevel.Information);
             o.AddConsole();
@@ -56,13 +59,13 @@ namespace CoverageConverter
             }
             catch (Exception ex)
             {
-                _logger.LogCritical(ex, "Error reading folder '{CoverageFilesFolder}'.", options.CoverageFilesFolder);
+                Logger.LogCritical(ex, "Error reading folder '{CoverageFilesFolder}'.", options.CoverageFilesFolder);
                 return;
             }
 
             if (coverageFiles.Count == 0)
             {
-                _logger.LogWarning("No '{DotCoverageExtension}' files found in folder '{CoverageFilesFolder}'.", options.DotCoverageExtension, options.CoverageFilesFolder);
+                Logger.LogWarning("No '{DotCoverageExtension}' files found in folder '{CoverageFilesFolder}'.", options.DotCoverageExtension, options.CoverageFilesFolder);
                 return;
             }
 
@@ -71,11 +74,13 @@ namespace CoverageConverter
             {
                 var destinationFilePath = sourceFilePath.Replace(options.DotCoverageExtension, DOT_COVERAGE_DOT_XML);
 
-                _logger.LogInformation("Generating file '{DestinationFilePath}' based on '{SourceFilePath}'.", destinationFilePath, sourceFilePath);
+                Logger.LogInformation("Generating file '{DestinationFilePath}' based on '{SourceFilePath}'.", destinationFilePath, sourceFilePath);
 
                 DeleteExistingDestinationFileIfNeeded(options, destinationFilePath);
 
                 RunCodeCoverageExe(codeCoverageExePath, sourceFilePath, destinationFilePath);
+
+                DeleteOriginalCoverageFileIfNeeded(options, sourceFilePath);
             }
         }
 
@@ -100,7 +105,7 @@ namespace CoverageConverter
             }
             catch (Exception ex)
             {
-                _logger.LogCritical(ex, "Unable to delete existing file '{DestinationFilePath}'.", destinationFilePath);
+                Logger.LogCritical(ex, "Unable to delete existing file '{DestinationFilePath}'.", destinationFilePath);
             }
         }
 
@@ -113,7 +118,22 @@ namespace CoverageConverter
             }
             catch (Exception ex)
             {
-                _logger.LogCritical(ex, "Error processing file '{SourceFilePath}'.", sourceFilePath);
+                Logger.LogCritical(ex, "Error processing file '{SourceFilePath}'.", sourceFilePath);
+            }
+        }
+
+        private static void DeleteOriginalCoverageFileIfNeeded(Options options, string sourceFilePath)
+        {
+            try
+            {
+                if (options.RemoveOriginalCoverageFiles && File.Exists(sourceFilePath))
+                {
+                    File.Delete(sourceFilePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogCritical(ex, "Unable to delete original file '{sourceFilePath}'.", sourceFilePath);
             }
         }
     }
