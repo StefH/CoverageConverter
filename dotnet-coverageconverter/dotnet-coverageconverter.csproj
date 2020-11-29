@@ -1,28 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <Version>0.0.2</Version>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net5</TargetFramework>
-    <PackAsTool>true</PackAsTool>
-    <ToolCommandName>dotnet-coverageconverter</ToolCommandName>
-    <Description>Convert .coverage (binary format) files to .coveragexml (xml format) files to support SonarCloud Code Coverage when using VSTest@2.</Description>
-    <PackageTags>Code Coverage Converter;Coverage;Converter;.coverage;.coveragexml;SonarQube;SonarCloud</PackageTags>
-  </PropertyGroup>
+	<PropertyGroup>
+		<Version>0.0.3</Version>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<PackAsTool>true</PackAsTool>
+		<ToolCommandName>dotnet-coverageconverter</ToolCommandName>
+		<Description>Convert .coverage (binary format) files to .coveragexml (xml format) files to support SonarCloud Code Coverage when using VSTest@2.</Description>
+		<PackageTags>Code Coverage Converter;Coverage;Converter;.coverage;.coveragexml;SonarQube;SonarCloud</PackageTags>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.8.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="CommandLineParser" Version="2.8.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="Microsoft.CodeCoverage\*.*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="Microsoft.CodeCoverage\*.*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 </Project>
