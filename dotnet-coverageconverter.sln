@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-coverageconverter", "dotnet-coverageconverter\dotnet-coverageconverter.csproj", "{8C8E2CA1-1F2F-4EE9-8D23-54F50B7C2B60}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E8E3A515-3E80-42B7-9A91-F8087AFDDD07}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{E86CEB92-1261-424D-92AA-39B6F1556C83}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +29,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8C8E2CA1-1F2F-4EE9-8D23-54F50B7C2B60} = {E8E3A515-3E80-42B7-9A91-F8087AFDDD07}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {09532A90-C796-4213-9C9E-F96F8FFAECB4}
