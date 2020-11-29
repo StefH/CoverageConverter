@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<Version>0.0.3</Version>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net5</TargetFramework>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>dotnet-coverageconverter</ToolCommandName>
 		<Description>Convert .coverage (binary format) files to .coveragexml (xml format) files to support SonarCloud Code Coverage when using VSTest@2.</Description>
