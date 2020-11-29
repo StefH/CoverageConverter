@@ -20,19 +20,19 @@ namespace CoverageConverter
             [Option('f', "CoverageFilesFolder", Required = true, HelpText = "The folder where the .coverage files are defined.")]
             public string CoverageFilesFolder { get; set; }
 
-            [Option('d', "DotCoverageExtension", Required = false, HelpText = "The extension from the coverage files.", Default = ".coverage")]
+            [Option('d', "DotCoverageExtension", HelpText = "The extension from the coverage files.", Default = ".coverage")]
             public string DotCoverageExtension { get; set; }
 
-            [Option('a', "AllDirectories", Required = false, HelpText = "Includes also sub-folders in the search operation.", Default = true)]
+            [Option('a', "AllDirectories", HelpText = "Includes also sub-folders in the search operation.", Default = true)]
             public bool AllDirectories { get; set; }
 
-            [Option('g', "Guid", Required = false, HelpText = "Only take .coverage file if the folder is a guid (that's the one VSTest creates).", Default = true)]
-            public bool OnlyGuidFolder { get; set; }
+            [Option('p', "ProcessAllFiles", HelpText = "Process all .coverage files, if not set, then only folders which are a guid (that's the one VSTest creates) will be processed.", Default = false)]
+            public bool ProcessAllFiles { get; set; }
 
-            [Option('o', "Overwrite", Required = false, HelpText = "Overwrite the existing .coveragexml files.", Default = true)]
+            [Option('o', "Overwrite", HelpText = "Overwrite the existing .coveragexml files.", Default = true)]
             public bool Overwrite { get; set; }
 
-            [Option('r', "RemoveOriginalCoverageFiles", Required = false, HelpText = "Remove the original .coverage files.", Default = false)]
+            [Option('r', "RemoveOriginalCoverageFiles", HelpText = "Remove the original .coverage files.")]
             public bool RemoveOriginalCoverageFiles { get; set; }
         }
 
@@ -90,7 +90,7 @@ namespace CoverageConverter
 
             return Directory
                 .EnumerateFiles(options.CoverageFilesFolder, $"*{options.DotCoverageExtension}", searchOption)
-                .Where(path => options.OnlyGuidFolder == false || Guid.TryParse(new DirectoryInfo(Path.GetDirectoryName(path)).Name, out _))
+                .Where(path => options.ProcessAllFiles || Guid.TryParse(new DirectoryInfo(Path.GetDirectoryName(path)).Name, out _))
                 .ToList();
         }
 

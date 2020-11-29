@@ -55,11 +55,11 @@ Install the tool in your yml pipeline:
 
   -a, --AllDirectories                 (Default: true) Includes also sub-folders in the search operation.
 
-  -g, --Guid                           (Default: true) Only take .coverage file if the folder is a guid (that's the one VSTest creates).
+  -p, --ProcessAllFiles                (Default: false) Process all .coverage files, if not set, then only folders which are a guid (that's the one VSTest creates) will be processed.
 
   -o, --Overwrite                      (Default: true) Overwrite the existing .coveragexml files.
 
-  -r, --RemoveOriginalCoverageFiles    (Default: false) Remove the original .coverage files.
+  -r, --RemoveOriginalCoverageFiles    Remove the original .coverage files.
 
   --help                               Display this help screen.
 
