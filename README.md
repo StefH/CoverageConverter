@@ -49,15 +49,21 @@ Install the tool in your yml pipeline:
 
 ## Commandline Options
 ```
-  -f, --CoverageFilesFolder     Required. The folder where the .coverage files are defined.
+  -f, --CoverageFilesFolder            Required. The folder where the .coverage files are defined.
 
-  -d, --DotCoverageExtension    (Default: .coverage) The extension from the coverage files.
+  -d, --DotCoverageExtension           (Default: .coverage) The extension from the coverage files.
 
-  -a, --AllDirectories          (Default: true) Includes also sub-folders in the search operation.
+  -a, --AllDirectories                 (Default: true) Includes also sub-folders in the search operation.
 
-  -g, --Guid                    (Default: true) Only take .coverage file if the folder is a guid (that's the one VSTest creates).
+  -g, --Guid                           (Default: true) Only take .coverage file if the folder is a guid (that's the one VSTest creates).
 
-  -o, --Overwrite               (Default: true) Overwrite the existing .coveragexml files.
+  -o, --Overwrite                      (Default: true) Overwrite the existing .coveragexml files.
+
+  -r, --RemoveOriginalCoverageFiles    (Default: false) Remove the original .coverage files.
+
+  --help                               Display this help screen.
+
+  --version                            Display version information.
 ```
 
 ### Info

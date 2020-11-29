@@ -32,7 +32,7 @@ namespace CoverageConverter
             [Option('o', "Overwrite", Required = false, HelpText = "Overwrite the existing .coveragexml files.", Default = true)]
             public bool Overwrite { get; set; }
 
-            [Option('r', "RemoveOriginalCoverageFiles", Required = false, HelpText = "Remove the original .coveragexml files.", Default = false)]
+            [Option('r', "RemoveOriginalCoverageFiles", Required = false, HelpText = "Remove the original .coverage files.", Default = false)]
             public bool RemoveOriginalCoverageFiles { get; set; }
         }
 
