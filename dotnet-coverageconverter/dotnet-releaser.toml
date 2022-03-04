@@ -1,0 +1,24 @@
+profile = "custom"
+
+[msbuild]
+project = "./dotnet-coverageconverter.csproj"
+configuration = "Release"
+
+[msbuild.properties]
+PublishTrimmed = false
+PublishSingleFile = true
+SelfContained = false
+PublishReadyToRun = true 
+CopyOutputSymbolsToPublishDirectory = true
+SkipCopyingSymbolsToOutputDirectory = false 
+
+[github]
+user = "StefH"
+repo = "CoverageConverter"
+
+[[pack]]
+rid = ["win-x64"]
+kinds = ["zip"]
+
+[nuget]
+publish = true

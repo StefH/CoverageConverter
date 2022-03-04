@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30709.132
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0AB9F17A-9C71-4A0E-BC02-42014749E2A0}"
 	ProjectSection(SolutionItems) = preProject
 		azure-pipelines-ci.yml = azure-pipelines-ci.yml
 		Directory.Build.props = Directory.Build.props
+		Generate-ReleaseNotes.bat = Generate-ReleaseNotes.bat
 		README.md = README.md
+		ReleaseNotes.md = ReleaseNotes.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-coverageconverter", "dotnet-coverageconverter\dotnet-coverageconverter.csproj", "{8C8E2CA1-1F2F-4EE9-8D23-54F50B7C2B60}"
