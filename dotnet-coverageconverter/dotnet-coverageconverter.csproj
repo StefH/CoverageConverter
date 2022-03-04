@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>0.0.6-preview-01</Version>
+    <Version>0.0.6</Version>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6</TargetFramework>
     <PackAsTool>true</PackAsTool>
